@@ -2,9 +2,10 @@ import openai
 import time
 import os
 import random
-from dotenv import load_dotenv
 import requests
 import datetime
+import logging
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -131,11 +132,13 @@ def should_send():
     current_hour = now.hour
     index = (1664525 * day + 1013904223) % 14
     hour_to_send = run_hours[index]
-    return True
-    # return current_hour == hour_to_send
+    is_should_send = current_hour == hour_to_send
+    logging.info("should_send: {day=} {current_hour=} {index=} {hour_to_send=} {is_should_send=}")
+    return is_should_send
 
 
 if __name__ == "__main__":
+    logging.info("Starting run")
     if should_send():
         # Randomly select a prompt
         prompt = random.choice(PROMPTS)
