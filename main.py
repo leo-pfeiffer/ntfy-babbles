@@ -13,6 +13,8 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 
 MONTH_IN_SECONDS = 60 * 60 * 24 * 30
 
+RUN_HOURS = (13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2)
+
 PROMPTS = (
     "Write a cute message for my wife:",
     "Compose an encouraging message for my wife:",
@@ -126,14 +128,11 @@ def send_message(message, title):
 
 
 def should_send():
-    run_hours = [*range(13, 24), 0, 1, 2]  # see cron job
     now = datetime.datetime.utcnow()
-    day = now.day
-    current_hour = now.hour
-    index = (1664525 * day + 1013904223) % 14
-    hour_to_send = run_hours[index]
-    is_should_send = current_hour == hour_to_send
-    logging.info("should_send: {day=} {current_hour=} {index=} {hour_to_send=} {is_should_send=}")
+    index = (1664525 * now.day + 1013904223) % 14
+    hour_to_send = RUN_HOURS[index]
+    is_should_send = now.hour == hour_to_send
+    logging.info("should_send: {now=} {index=} {hour_to_send=} {is_should_send=}")
     return is_should_send
 
 
