@@ -4,6 +4,7 @@ import os
 import random
 from dotenv import load_dotenv
 import requests
+import datetime
 
 load_dotenv()
 
@@ -124,10 +125,14 @@ def send_message(message, title):
 
 
 def should_send():
-    day = datetime.datetime.today().day
-    current_hour = datetime.datetime.now().hour
-    hour_to_send = (1664525 * day + 1013904223) % 12
-    return current_hour == hour_to_send
+    run_hours = [*range(13, 24), 0, 1, 2]  # see cron job
+    now = datetime.datetime.utcnow()
+    day = now.day
+    current_hour = now.hour
+    index = (1664525 * day + 1013904223) % 14
+    hour_to_send = run_hours[index]
+    return True
+    # return current_hour == hour_to_send
 
 
 if __name__ == "__main__":
