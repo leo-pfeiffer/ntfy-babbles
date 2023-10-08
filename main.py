@@ -7,6 +7,9 @@ import datetime
 import logging
 from dotenv import load_dotenv
 
+logging.basicConfig()
+logging.getLogger().setLevel(logging.INFO)
+
 load_dotenv()
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -132,7 +135,7 @@ def should_send():
     index = (1664525 * now.day + 1013904223) % 14
     hour_to_send = RUN_HOURS[index]
     is_should_send = now.hour == hour_to_send
-    logging.info("should_send: {now=} {index=} {hour_to_send=} {is_should_send=}")
+    logging.info(f"should_send: {now=} {index=} {hour_to_send=} {is_should_send=}")
     return is_should_send
 
 
