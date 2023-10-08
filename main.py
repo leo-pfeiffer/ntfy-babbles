@@ -21,12 +21,12 @@ RUN_HOURS = (13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2)
 PROMPTS = (
     "Write a cute message for my wife:",
     "Compose an encouraging message for my wife:",
-    "Send a loving message to brighten my wife's day:",
+    "Write a loving message to brighten my wife's day:",
 )
 ADJECTIVES = ("sweet", "gorgeous", "beautiful", "brilliant", "amazing", "incredible")
 NAMES = ("wife", "angel", "babbles", "rainbow princess dream rat", "baby")
 
-MESSAGES = [
+BACKUP_MESSAGES = [
     "A beautiful dayt, my love! Remember, you're the sunshine in my life.",
     "You make every day brighter with your smile. Have a wonderful day!",
     "You're the reason behind my smile. I love you more each day.",
@@ -91,17 +91,19 @@ MESSAGES = [
 
 
 def generate_message(prompt):
-    # response = openai.Completion.create(
-    #     engine="davinci",
-    #     prompt=prompt,
-    #     max_tokens=50,  # Adjust as needed for desired message length
-    #     n=1,  # Number of responses to generate
-    #     stop=None,  # Optional stop words to prevent the model from continuing
-    #     temperature=0.7  # Adjust for creativity (0.2 for more focused, 1.0 for more random)
-    # )
-    #new_message = response.choices[0].text.strip()
+    # try:
+    #     response = openai.Completion.create(
+    #         engine="davinci",
+    #         prompt=prompt,
+    #         max_tokens=30,  # Adjust as needed for desired message length
+    #         n=1,  # Number of responses to generate
+    #         temperature=0.5  # Adjust for creativity (0.2 for more focused, 1.0 for more random)
+    #     )
+    #     return response.choices[0].text.strip()
     
-    return random.choice(MESSAGES)
+    # except: 
+    #     return random.choice(BACKUP_MESSAGES)
+    return random.choice(BACKUP_MESSAGES)
 
 
 def send_message(message, title):
@@ -114,7 +116,7 @@ def send_message(message, title):
         "Tags": "heart"
         }
     )
-    logging.info("Sending message: {message}")
+    logging.info(f"Sent message: {message}")
 
 
 def get_hour_to_send_today(current_time):
@@ -127,11 +129,13 @@ def should_send(current_time):
     hour_to_send = get_hour_to_send_today(current_time)
     is_should_send = current_time.hour == hour_to_send
     logging.info(f"should_send: {current_time=} {hour_to_send=} {is_should_send=}")
-    return is_should_send
+    # return is_should_send
+    return True
 
 
 if __name__ == "__main__":
     logging.info("Starting run")
+    print(f"MY_TEST_VAR: {os.getenv('MY_TEST_VAR')}")
     if should_send(datetime.datetime.utcnow()):
         # Randomly select a prompt
         prompt = random.choice(PROMPTS)
