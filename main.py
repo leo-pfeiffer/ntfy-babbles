@@ -23,12 +23,10 @@ PROMPTS = (
     "Compose an encouraging message for my wife:",
     "Send a loving message to brighten my wife's day:",
 )
-ADJECTIVES = ("sweet", "gorgeous", "beautiful", "brilliant")
+ADJECTIVES = ("sweet", "gorgeous", "beautiful", "brilliant", "amazing", "incredible")
 NAMES = ("wife", "angel", "babbles", "rainbow princess dream rat", "baby")
 
-generated_messages = {}
-
-messages = [
+MESSAGES = [
     "A beautiful dayt, my love! Remember, you're the sunshine in my life.",
     "You make every day brighter with your smile. Have a wonderful day!",
     "You're the reason behind my smile. I love you more each day.",
@@ -91,31 +89,19 @@ messages = [
     "Just a quick note to say, 'I love you more each day.'"
 ]
 
+
 def generate_message(prompt):
-    while True:
-        # response = openai.Completion.create(
-        #     engine="davinci",
-        #     prompt=prompt,
-        #     max_tokens=50,  # Adjust as needed for desired message length
-        #     n=1,  # Number of responses to generate
-        #     stop=None,  # Optional stop words to prevent the model from continuing
-        #     temperature=0.7  # Adjust for creativity (0.2 for more focused, 1.0 for more random)
-        # )
-        #new_message = response.choices[0].text.strip()
-        
-        new_message = random.choice(messages)
-        
-        current_time = time.time()
-
-        if new_message not in generated_messages:
-            generated_messages[new_message] = current_time
-            return new_message
-
-        if new_message in generated_messages:
-            past_time = generated_messages[new_message]
-            if current_time - past_time > MONTH_IN_SECONDS:
-                generated_messages[new_message] = current_time
-                return new_message
+    # response = openai.Completion.create(
+    #     engine="davinci",
+    #     prompt=prompt,
+    #     max_tokens=50,  # Adjust as needed for desired message length
+    #     n=1,  # Number of responses to generate
+    #     stop=None,  # Optional stop words to prevent the model from continuing
+    #     temperature=0.7  # Adjust for creativity (0.2 for more focused, 1.0 for more random)
+    # )
+    #new_message = response.choices[0].text.strip()
+    
+    return random.choice(MESSAGES)
 
 
 def send_message(message, title):
@@ -128,20 +114,25 @@ def send_message(message, title):
         "Tags": "heart"
         }
     )
+    logging.info("Sending message: {message}")
 
 
-def should_send():
-    now = datetime.datetime.utcnow()
-    index = (1664525 * now.day + 1013904223) % 14
+def get_hour_to_send_today(current_time):
+    index = hash(current_time.day * current_time.month) % 14
     hour_to_send = RUN_HOURS[index]
-    is_should_send = now.hour == hour_to_send
-    logging.info(f"should_send: {now=} {index=} {hour_to_send=} {is_should_send=}")
+    return hour_to_send
+
+
+def should_send(current_time):
+    hour_to_send = get_hour_to_send_today(current_time)
+    is_should_send = current_time.hour == hour_to_send
+    logging.info(f"should_send: {current_time=} {hour_to_send=} {is_should_send=}")
     return is_should_send
 
 
 if __name__ == "__main__":
     logging.info("Starting run")
-    if should_send():
+    if should_send(datetime.datetime.utcnow()):
         # Randomly select a prompt
         prompt = random.choice(PROMPTS)
         message = generate_message(prompt)
