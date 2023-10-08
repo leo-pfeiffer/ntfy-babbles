@@ -129,8 +129,7 @@ def should_send(current_time):
     hour_to_send = get_hour_to_send_today(current_time)
     is_should_send = current_time.hour == hour_to_send
     logging.info(f"should_send: {current_time=} {hour_to_send=} {is_should_send=}")
-    # return is_should_send
-    return True
+    return is_should_send
 
 
 if __name__ == "__main__":
