@@ -2,7 +2,7 @@ name: run main.py
 
 on:
   schedule:
-    - cron: '05 * * * *'
+    - cron: '05 * * * *' # At 13:05 every hour to 02:05
 
 jobs:
   build:
@@ -21,5 +21,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: execute py script # run main.py
+      - name: execute py script
+        env:
+          MY_TEST_VAR: ${{ secrets.MY_TEST_VAR }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: python main.py
