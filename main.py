@@ -140,7 +140,7 @@ def generate_message(prompt):
     #     )
     #     return response.choices[0].text.strip()
     
-    # except: 
+    # except:
     #     return random.choice(BACKUP_MESSAGES)
     return random.choice(BACKUP_MESSAGES)
 
