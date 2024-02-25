@@ -1,18 +1,13 @@
-import openai
 import time
-import os
 import random
 import requests
 import datetime
 import logging
-from dotenv import load_dotenv
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)
 
 load_dotenv()
-
-openai.api_key = os.getenv('OPENAI_API_KEY')
 
 MONTH_IN_SECONDS = 60 * 60 * 24 * 30
 
@@ -130,18 +125,6 @@ BACKUP_MESSAGES = [
 
 
 def generate_message(prompt):
-    # try:
-    #     response = openai.Completion.create(
-    #         engine="davinci",
-    #         prompt=prompt,
-    #         max_tokens=30,  # Adjust as needed for desired message length
-    #         n=1,  # Number of responses to generate
-    #         temperature=0.5  # Adjust for creativity (0.2 for more focused, 1.0 for more random)
-    #     )
-    #     return response.choices[0].text.strip()
-    
-    # except:
-    #     return random.choice(BACKUP_MESSAGES)
     return random.choice(BACKUP_MESSAGES)
 
 
@@ -173,7 +156,6 @@ def should_send(current_time):
 
 if __name__ == "__main__":
     logging.info("Starting run")
-    print(f"MY_TEST_VAR: {os.getenv('MY_TEST_VAR')}")
     if should_send(datetime.datetime.utcnow()):
         # Randomly select a prompt
         prompt = random.choice(PROMPTS)
