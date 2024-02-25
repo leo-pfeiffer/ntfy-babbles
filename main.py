@@ -7,8 +7,6 @@ import logging
 logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)
 
-load_dotenv()
-
 MONTH_IN_SECONDS = 60 * 60 * 24 * 30
 
 RUN_HOURS = (13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2)
