@@ -1,4 +1,3 @@
-import time
 import random
 import requests
 import datetime
@@ -11,13 +10,33 @@ MONTH_IN_SECONDS = 60 * 60 * 24 * 30
 
 RUN_HOURS = (13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2)
 
-PROMPTS = (
-    "Write a cute message for my wife:",
-    "Compose an encouraging message for my wife:",
-    "Write a loving message to brighten my wife's day:",
+ADJECTIVES = (
+    "sweet",
+    "gorgeous",
+    "beautiful",
+    "brilliant",
+    "amazing",
+    "incredible",
+    "perfect",
+    "wonderful",
+    "fantastic",
+    "lovely",
+    "awesome",
+    "adorable",
+    "stunning",
+    "delightful",
 )
-ADJECTIVES = ("sweet", "gorgeous", "beautiful", "brilliant", "amazing", "incredible")
-NAMES = ("wife", "angel", "babbles", "rainbow princess dream rat", "baby")
+NAMES = (
+    "wife",
+    "angel",
+    "babbles",
+    "rainbow princess dream rat",
+    "baby",
+    "love",
+    "darling",
+    "sweetheart",
+    "sunshine"
+)
 
 BACKUP_MESSAGES = [
     "Your strength and grace inspire me every day. You're appreciated more than words can say.",
@@ -122,10 +141,6 @@ BACKUP_MESSAGES = [
 ]
 
 
-def generate_message(prompt):
-    return random.choice(BACKUP_MESSAGES)
-
-
 def send_message(message, title):
     requests.post(
         "https://ntfy.sh/my-sweet-babbles", 
@@ -156,7 +171,6 @@ if __name__ == "__main__":
     logging.info("Starting run")
     if should_send(datetime.datetime.utcnow()):
         # Randomly select a prompt
-        prompt = random.choice(PROMPTS)
-        message = generate_message(prompt)
+        message = random.choice(BACKUP_MESSAGES)
         title = f"To my {random.choice(ADJECTIVES)} {random.choice(NAMES)}"
         send_message(message, title)

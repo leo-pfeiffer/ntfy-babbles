@@ -1,6 +1,7 @@
 name: run main.py
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '05 * * * *' # At 13:05 every hour to 02:05
 
@@ -9,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repo content
-        uses: actions/checkout@v2 # checkout the repository content
+        uses: actions/checkout@v4 # checkout the repository content
 
       - name: setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10' # install the python version needed
 
@@ -22,7 +23,4 @@ jobs:
           pip install -r requirements.txt
 
       - name: execute py script
-        env:
-          MY_TEST_VAR: ${{ secrets.MY_TEST_VAR }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: python main.py
