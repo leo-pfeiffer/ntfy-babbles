@@ -14,7 +14,7 @@ NTFY_RESOURCE = os.getenv("NTFY_RESOURCE")
 if not NTFY_RESOURCE:
     raise Exception("Environment variable NTFY_RESOURCE not set.")
 
-logger.info(f"{NTFY_RESOURCE=}")
+logging.info(f"{NTFY_RESOURCE=}")
 
 MONTH_IN_SECONDS = 60 * 60 * 24 * 30
 
