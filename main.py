@@ -3,6 +3,7 @@ import requests
 import datetime
 import logging
 from dotenv import load_dotenv
+import os 
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)
