@@ -23,4 +23,6 @@ jobs:
           pip install -r requirements.txt
 
       - name: execute py script
+        env:
+          NTFY_RESOURCE: ${{ vars.NTFY_RESOURCE }}
         run: python main.py

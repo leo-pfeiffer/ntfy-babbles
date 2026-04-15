@@ -2,9 +2,18 @@ import random
 import requests
 import datetime
 import logging
+from dotenv import load_dotenv
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)
+
+load_dotenv()
+
+NTFY_RESOURCE = os.getenv("NTFY_RESOURCE")
+if not NTFY_RESOURCE:
+    raise Exception("Environment variable NTFY_RESOURCE not set.")
+
+logger.info(f"{NTFY_RESOURCE=}")
 
 MONTH_IN_SECONDS = 60 * 60 * 24 * 30
 
@@ -143,7 +152,7 @@ BACKUP_MESSAGES = [
 
 def send_message(message, title):
     requests.post(
-        "https://ntfy.sh/my-sweet-babbles", 
+        f"https://ntfy.sh/{NTFY_RESOURCE}",
         data=message,
         headers={
         "Title": title,
